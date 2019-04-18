@@ -4,7 +4,7 @@ utils functions for data set preparation
 import os
 
 import tensorflow as tf
-from config_old import ModelConfig
+from config_folder.config_old import ModelConfig
 from data_utils import preprocessing
 from data_utils.preprocessing import mean_image_subtraction
 

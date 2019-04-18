@@ -5,7 +5,6 @@ import PIL
 import tensorflow as tf
 import io
 # from config_old import ModelConfig
-from config import DataConfig
 import cv2
 
 
@@ -72,14 +71,15 @@ def cityscape_seg_generator(data_folder, batch_size=16):
     :param batch_size:
     :return:
     """
-    def _get_label_for_cityscape(image_dir, label_folder):
+    def _get_label_for_cityscape(image_dir):
         """
         get corresponding label path given image
         :return:
         """
         sample_name = image_dir.split('\\')[-1].split('_left')[0] + '_gtFine_labelIds.png'
         sub_folder = sample_name.split('_')[0]
-        prefix = 'D:\\herschel\\navigation\\data\\gtFine_trainvaltest\\gtFine\\'
+        prefix = os.path.join(os.path.split(image_dir)[0]+'data\\gtFine_trainvaltest\\gtFine\\')
+        folder = 'train' if 'train' in image_dir else 'val'
         label_dir = os.path.join(prefix, folder, sub_folder, sample_name)
         if os.path.exists(label_dir):
             return label_dir
@@ -188,7 +188,7 @@ def combine_generator(folder='train', batch_size=16):
 if __name__ == '__main__':
     from data_utils.visualization import apply_mask
     import matplotlib.pyplot as plt
-    from config import DataConfig
+    from config_folder.config import DataConfig
     while True:
         data, labels = next(indoor_seg_generator(DataConfig.seg_data_folder, DataConfig.seg_label_folder), 4)
         if np.sum(labels) > 0:

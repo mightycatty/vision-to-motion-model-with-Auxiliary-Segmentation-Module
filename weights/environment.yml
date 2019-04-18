@@ -1,0 +1,62 @@
+name: default
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+  - defaults
+dependencies:
+  - vs2015_runtime=14.15.26706=h3a45250_0
+  - backports=1.0=py36_0
+  - backports.weakref=1.0rc1=py36_0
+  - blas=1.0=mkl
+  - bleach=1.5.0=py36_0
+  - certifi=2016.2.28=py36_0
+  - graphviz=2.38.0=4
+  - h5py=2.7.0=np113py36_0
+  - hdf5=1.8.15.1=vc14_4
+  - html5lib=0.9999999=py36_0
+  - libprotobuf=3.2.0=vc14_0
+  - markdown=2.6.9=py36_0
+  - mkl=2017.0.3=0
+  - numpy=1.13.1=py36_0
+  - openssl=1.0.2l=vc14_0
+  - pip=9.0.1=py36_1
+  - protobuf=3.2.0=py36_0
+  - python=3.6.2=0
+  - pyyaml=3.12=py36_0
+  - scipy=0.19.1=np113py36_0
+  - setuptools=36.4.0=py36_1
+  - six=1.10.0=py36_0
+  - sqlite=3.13.0=vc14_1
+  - tensorflow=1.2.1=py36_0
+  - vc=14=0
+  - werkzeug=0.12.2=py36_0
+  - wheel=0.29.0=py36_0
+  - wincertstore=0.2=py36_0
+  - zlib=1.2.11=vc14_0
+  - ca-certificates=2019.1.23=0
+  - keras=2.2.4=0
+  - keras-applications=1.0.7=py_0
+  - keras-base=2.2.4=py36_0
+  - keras-preprocessing=1.0.9=py_0
+  - pip:
+    - absl-py==0.7.1
+    - astor==0.7.1
+    - cycler==0.10.0
+    - gast==0.2.2
+    - grpcio==1.20.0
+    - kiwisolver==1.0.1
+    - matplotlib==3.0.3
+    - mock==2.0.0
+    - opencv-python==4.1.0.25
+    - pbr==5.1.3
+    - pillow==6.0.0
+    - pydot==1.4.1
+    - pyparsing==2.4.0
+    - python-dateutil==2.8.0
+    - tensorboard==1.13.1
+    - tensorflow-estimator==1.13.0
+    - termcolor==1.1.0
+prefix: C:\Users\86156\AppData\Local\conda\conda\envs\default
+

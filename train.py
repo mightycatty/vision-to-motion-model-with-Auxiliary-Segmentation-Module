@@ -4,7 +4,7 @@ training model
 from data_utils import generator
 from model import navigation_model, compile_model
 from train_utils import create_callbacks
-from config import DataConfig, ModelConfig, TrainingConfig
+from config_folder.config import DataConfig, TrainingConfig
 import os
 
 

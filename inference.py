@@ -11,14 +11,12 @@ import PIL
 import matplotlib.pyplot as plt
 from keras_implementation.model import model_fn
 from tqdm import tqdm
-from config_old import ModelConfig as M_old
-import cv2
+from config_folder.config_old import ModelConfig as M_old
 from keras_implementation.generator import resize
 from keras_implementation.visualization import apply_mask
 import shutil
 import os
 from keras_implementation import config
-from postprocessing.mask_refine import mask_refine_entry
 
 
 class ImageEvaluation(keras.callbacks.Callback):
@@ -107,7 +105,6 @@ def batch_evaluation(folder):
 
 
 if __name__ == '__main__':
-    from scipy.ndimage.interpolation import rotate
     folder = 'D:\herschel\\navigation\data\classification\\val'
     # folder = 'D:\herschel\\navigation\data\indoor_nav\\test'
     # folder = 'D:\herschel\\navigation\data\leftImg8bit_trainvaltest\leftImg8bit\\test\\berlin'

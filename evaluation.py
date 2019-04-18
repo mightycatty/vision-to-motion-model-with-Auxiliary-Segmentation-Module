@@ -3,7 +3,7 @@ evaluation performance for pre-trained model
 Metrics: mAP, IoU, Confusion Matrix
 """
 from keras_implementation.inference import Model
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import confusion_matrix
 from keras_implementation.config import ModelConfig as Modelconfig_new
 from data_utils import dataset_util
 import numpy as np
@@ -11,12 +11,10 @@ import PIL
 import tensorflow as tf
 from keras_implementation.generator import resize
 import io
-from config_old import ModelConfig
+from config_folder.config_old import ModelConfig
 import matplotlib.pyplot as plt
 import itertools
-import keras
 import seaborn as sns
-from keras_implementation.train_utils import iou_metric_batch
 
 
 def plot_confusion_matrix(cm, classes,
