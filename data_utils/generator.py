@@ -14,6 +14,17 @@ def resize(img, shape=(256, 256)):
     return img
 
 
+def batch_resize(img_batch, resize_shape=(256, 256)):
+    img_list = []
+    for img_item in img_batch:
+        img_list.append(resize(img_item, resize_shape))
+    img_batch = np.stack(img_list, axis=0)
+    img_batch[img_batch > 0.5] = 1
+    img_batch[img_batch < 1] = 0
+    img_batch = np.expand_dims(img_batch, axis=3)
+    return img_batch
+
+
 def interested_labels(label):
     """
     set interested labels in segmentation as forground and the rest as backgound
@@ -185,9 +196,11 @@ def combine_generator(folder='train', batch_size=16):
         data = np.concatenate([cl_imgs, seg_imgs], axis=0).astype(np.float32)
         cl_labels = np.concatenate([cl_labels, 255*np.ones(shape=(batch_size, ))]).astype(np.int16)
         cl_labels = cl_labels.reshape((-1, ))
-        seg_labels = np.concatenate([255*np.ones(shape=(batch_size, 256, 256)), seg_labels], axis=0).astype(np.int16)
-        seg_labels = np.expand_dims(seg_labels, axis=3)
-        yield data, [cl_labels, seg_labels, seg_labels]
+        seg_labels_scale = np.concatenate([255*np.ones(shape=(batch_size, 256, 256)), seg_labels], axis=0).astype(np.int16)
+        seg_labels_scale = np.expand_dims(seg_labels_scale, axis=3)
+        seg_labels_scale_0 = batch_resize(seg_labels_scale, (32, 32))
+        seg_labels_scale_1 = batch_resize(seg_labels_scale, (16, 16))
+        yield data, [cl_labels, seg_labels_scale_0, seg_labels_scale_1]
 
 
 if __name__ == '__main__':
