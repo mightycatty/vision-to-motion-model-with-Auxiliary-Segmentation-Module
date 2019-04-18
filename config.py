@@ -14,13 +14,13 @@ class DataConfig(object):
     interest_label = [6, 7, 8, 9, 10] # road/flat/sidewalk etc.
 
     # configuration for indoor data set
-    classification_categories = ['turn_left', 'turn_right', 'adjust_left', 'adjust_right', 'move_forward', 'turn_around', 'target_found']
+    classification_categories = ['turn_left', 'turn_right', 'adjust_left', 'adjust_right', 'move_forward', 'turn_around']
     classification_num_classes = len(classification_categories)
     clf_data_folder = 'F:\heshuai\lab\paper-for-sj\\1\code\\navigation\data\classification\\train'
     seg_label_folder = 'F:\heshuai\lab\paper-for-sj\\1\code\\navigation\data\indoor_nav\\new\PixelLabelData\PixelLabelData'
     seg_data_folder = 'F:\heshuai\lab\paper-for-sj\\1\code\\navigation\data\indoor_nav\\new\TrainingLabelData\TrainingLabelData'
     # config for input image
-    image_dim = (256, 256, 3)
+    image_size = (256, 256)
 
 
 class ModelConfig(object):
@@ -30,9 +30,10 @@ class ModelConfig(object):
 
 
 class TrainingConfig(object):
-    training_branch = ['unit', 'segmentation', 'classification'][2]
-    # training segmentation branch with cityscape data set instead of collected indoor dataset
-    segmentation_on_cityscape = False
+    pretrained_weights_dir = 'F:\heshuai\lab\paper-for-sj\\1\code\\navigation\weights\\vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'
+    batch_size = 4
+    steps_per_epoch = 300
+    epochs = 30
 
 
 # prepare gpu for training

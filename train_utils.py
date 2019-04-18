@@ -83,16 +83,6 @@ def my_iou_metric(label, pred):
     return metric_value
 
 
-def valid_loss_test(y_true, y_pred):
-    y_true = keras.backend.reshape(y_true, (-1,))
-    y_pred = keras.backend.reshape(y_pred, (-1, y_pred.shape[-1].value))
-    valid_weight = tf.where(tf.equal(y_true, 255), keras.backend.zeros_like(y_true), keras.backend.ones_like(y_true))
-    y_true = tf.where(tf.equal(y_true, 255), keras.backend.zeros_like(y_true), y_true)
-    loss = keras.backend.sum(valid_weight * keras.backend.sparse_categorical_crossentropy(y_true, y_pred))
-    loss = loss / keras.backend.sum(valid_weight)
-    return loss
-
-
 def create_callbacks(model_name):
     callback = []
     checkpoint = keras.callbacks.ModelCheckpoint(
@@ -102,7 +92,10 @@ def create_callbacks(model_name):
         ),
         verbose=1
     )
-    tensorboard = TensorBoard(log_dir=os.path.join('./log', model_name))
+    log_dir = './log'
+    if not os.path.exists(log_dir):
+        os.mkdir(log_dir)
+    tensorboard = TensorBoard(log_dir=os.path.join(log_dir, model_name))
     callback.append(checkpoint)
     callback.append(tensorboard)
     return callback

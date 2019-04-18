@@ -5,7 +5,21 @@ import keras
 import tensorflow as tf
 from keras import layers, models
 
-from train_utils import valid_loss_test
+
+def defined_loss(y_true, y_pred):
+    """
+    defined loss for incomplete dataset, label of 255 are ignored when calculate loss
+    :param y_true:
+    :param y_pred:
+    :return:
+    """
+    y_true = keras.backend.reshape(y_true, (-1,))
+    y_pred = keras.backend.reshape(y_pred, (-1, y_pred.shape[-1].value))
+    valid_weight = tf.where(tf.equal(y_true, 255), keras.backend.zeros_like(y_true), keras.backend.ones_like(y_true))
+    y_true = tf.where(tf.equal(y_true, 255), keras.backend.zeros_like(y_true), y_true)
+    loss = keras.backend.sum(valid_weight * keras.backend.sparse_categorical_crossentropy(y_true, y_pred))
+    loss = loss / keras.backend.sum(valid_weight)
+    return loss
 
 
 def navigation_model(input_tensor=None):
@@ -115,7 +129,7 @@ def compile_model(base_model):
     tf.summary.image('mask_1', tf.concat([255 * tf.cast(mask_1, tf.float32)] * 3, axis=3),
                      max_outputs=6)  # Concatenate row-wise.
     base_model.compile(
-        loss=[keras.losses.sparse_categorical_crossentropy, valid_loss_test, valid_loss_test],
+        loss=[keras.losses.sparse_categorical_crossentropy, defined_loss, defined_loss],
         optimizer='adam', #keras.optimizers.SGD(lr=3e-5, momentum=0.9),
         metrics=['acc']
     )
@@ -129,3 +143,5 @@ if __name__ == '__main__':
     import os
     os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
     plot_model(u, show_shapes=True, to_file='united_model.png')
+
+
