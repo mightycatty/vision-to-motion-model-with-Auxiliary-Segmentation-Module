@@ -1,0 +1,13 @@
+file structure:
+    config: model and training config
+    generator: data generator for training
+    inference: inference utils for pre-trained model
+    model: model building utils
+    train: training utils
+    visualization: result visualization utils
+    evaluation: metric evaluation for pre-trained model
+
+Usage:
+    1. config model and training in config.py # for specific training configuration such as training step, epoch, config in train.py
+    2. run train.py for training
+    3. run inference.py for inference and result evaluation
