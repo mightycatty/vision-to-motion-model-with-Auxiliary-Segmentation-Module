@@ -5,3 +5,5 @@
 
 *.h5
 *.tfrecord
+*.events.out.*
+.idea/
