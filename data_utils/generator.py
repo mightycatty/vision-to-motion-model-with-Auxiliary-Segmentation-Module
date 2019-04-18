@@ -6,9 +6,10 @@ import tensorflow as tf
 import io
 # from config_old import ModelConfig
 import cv2
+from config_folder.config_agent import DataConfig
 
 
-def resize(img, shape=(512, 512)):
+def resize(img, shape=(256, 256)):
     img = cv2.resize(img, shape)
     return img
 
@@ -58,7 +59,8 @@ def classification_generator(data_folder, batch_size=16):
                 encoded_jpg = fid.read()
             encoded_jpg_io = io.BytesIO(encoded_jpg)
             image = PIL.Image.open(encoded_jpg_io)
-            batch_data.append(np.array(image))
+            image = resize(np.array(image))
+            batch_data.append(image)
         batch_data = np.stack(batch_data, axis=0)
         batch_label = np.array(batch_label)
         yield batch_data, batch_label
@@ -78,7 +80,7 @@ def cityscape_seg_generator(data_folder, batch_size=16):
         """
         sample_name = image_dir.split('\\')[-1].split('_left')[0] + '_gtFine_labelIds.png'
         sub_folder = sample_name.split('_')[0]
-        prefix = os.path.join(os.path.split(image_dir)[0]+'data\\gtFine_trainvaltest\\gtFine\\')
+        prefix = os.path.join(image_dir.split('data')[0]+'data\\gtFine_trainvaltest\\gtFine\\')
         folder = 'train' if 'train' in image_dir else 'val'
         label_dir = os.path.join(prefix, folder, sub_folder, sample_name)
         if os.path.exists(label_dir):
@@ -86,9 +88,8 @@ def cityscape_seg_generator(data_folder, batch_size=16):
         else:
             print('%s not found corresponding label')
             return None
-    # samples = dataset_util.get_file_list('D:\herschel\\navigation\data\leftImg8bit_trainvaltest\leftImg8bit\\'+data_folder)
     samples = dataset_util.get_file_list(data_folder)
-    labels = [_get_label_for_cityscape(item, data_folder) for item in samples]
+    labels = [_get_label_for_cityscape(item) for item in samples]
     samples = np.array(samples)
     labels = np.array(labels)
     shuffle_index = np.arange(0, len(samples))
@@ -171,32 +172,39 @@ def combine_generator(folder='train', batch_size=16):
     # 255 mean invalid labels
     assert folder in ['train', 'val'], 'folder must be train or val'
     batch_size = int(batch_size // 2)
-    i = 0
+    clf_folder = os.path.join(DataConfig.clf_data_folder, folder)
+    cityscape_seg_folder = os.path.join(DataConfig.cityscape_folder, folder)
+    clf_gen = classification_generator(clf_folder, batch_size)
+    indoor_seg_gen = indoor_seg_generator(DataConfig.seg_data_folder, DataConfig.seg_label_folder, batch_size)
+    cityscape_seg_gen = cityscape_seg_generator(cityscape_seg_folder)
     while True:
-        cl_imgs, cl_labels = next(classification_generator(folder, batch_size))
-        seg_imgs, seg_labels = next(segmentation_generator(folder, batch_size))
-        seg_imgs, seg_labels = next(segmentation_generator_test(batch_size))
+        cl_imgs, cl_labels = next(clf_gen)
+        # seg_imgs, seg_labels = next(segmentation_generator(folder, batch_size))
+        seg_imgs, seg_labels = next(indoor_seg_gen)
         seg_labels = np.squeeze(seg_labels)
         data = np.concatenate([cl_imgs, seg_imgs], axis=0).astype(np.float32)
         cl_labels = np.concatenate([cl_labels, 255*np.ones(shape=(batch_size, ))]).astype(np.int16)
         cl_labels = cl_labels.reshape((-1, ))
-        seg_labels = np.concatenate([255*np.ones(shape=(batch_size, 512, 512)), seg_labels], axis=0).astype(np.int16)
+        seg_labels = np.concatenate([255*np.ones(shape=(batch_size, 256, 256)), seg_labels], axis=0).astype(np.int16)
         seg_labels = np.expand_dims(seg_labels, axis=3)
-        yield data, [cl_labels, seg_labels]
+        yield data, [cl_labels, seg_labels, seg_labels]
 
 
 if __name__ == '__main__':
     from data_utils.visualization import apply_mask
     import matplotlib.pyplot as plt
-    from config_folder.config import DataConfig
+    gen = combine_generator(batch_size=16)
     while True:
-        data, labels = next(indoor_seg_generator(DataConfig.seg_data_folder, DataConfig.seg_label_folder), 4)
-        if np.sum(labels) > 0:
+        data, labels = next(gen)
+        seg_labels = labels[-1]
+        clf_labels = labels[0]
+        for data_item, seg_item, clf_item in zip(data, seg_labels, clf_labels):
             color = [0, 75, 75]
-            img = apply_mask(data[0], np.squeeze(labels[0]), color)
+            img = apply_mask(data_item, np.squeeze(seg_item), color)
             img = np.uint8(img)
+            if clf_item < 255:
+                clf_item = DataConfig.classification_categories[clf_item]
+                plt.title(str(clf_item))
             # plt.imsave('test.png', img)
             plt.imshow(img)
             plt.show()
-        else:
-            continue

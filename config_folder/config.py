@@ -17,9 +17,10 @@ class DataConfig(object):
     prefix = os.getcwd()
     classification_categories = ['turn_left', 'turn_right', 'adjust_left', 'adjust_right', 'move_forward', 'turn_around']
     classification_num_classes = len(classification_categories)
-    clf_data_folder = os.path.join(prefix, '/data/classification/train')
-    seg_label_folder = os.path.join(prefix, '/data/indoor_nav/new/PixelLabelData/PixelLabelData')
-    seg_data_folder = os.path.join(prefix, '/data/indoor_nav/new/TrainingLabelData/TrainingLabelData')
+    clf_data_folder = 'Z:\py_project\\vision-to-motion-model-with-Auxiliary-Segmentation-Module\data\classification'
+    seg_label_folder = 'Z:\py_project\\vision-to-motion-model-with-Auxiliary-Segmentation-Module\data\indoor_nav\\new\PixelLabelData\PixelLabelData'
+    seg_data_folder = 'Z:\py_project\\vision-to-motion-model-with-Auxiliary-Segmentation-Module\data\indoor_nav\\new\TrainingLabelData\TrainingLabelData'
+    cityscape_folder = 'Z:\py_project\\vision-to-motion-model-with-Auxiliary-Segmentation-Module\data\leftImg8bit_trainvaltest\leftImg8bit'
     # config for input image
     image_size = (256, 256)
 
@@ -31,10 +32,8 @@ class ModelConfig(object):
 
 
 class TrainingConfig(object):
-    import sys
-    import os
-    prefix = os.getcwd()
-    pretrained_weights_dir = os.path.join(prefix, 'weights/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5')
+    # pretrained_weights_dir = os.path.join(prefix, 'weights/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5')
+    pretrained_weights_dir = None
     batch_size = 4
     steps_per_epoch = 300
     epochs = 30
