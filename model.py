@@ -18,7 +18,7 @@ def defined_loss(y_true, y_pred):
     valid_weight = tf.where(tf.equal(y_true, 255), keras.backend.zeros_like(y_true), keras.backend.ones_like(y_true))
     y_true = tf.where(tf.equal(y_true, 255), keras.backend.zeros_like(y_true), y_true)
     loss = keras.backend.sum(valid_weight * keras.backend.sparse_categorical_crossentropy(y_true, y_pred))
-    loss = loss / keras.backend.sum(valid_weight)
+    loss = loss / (keras.backend.sum(valid_weight) + 1e-6)
     return loss
 
 
@@ -79,7 +79,7 @@ def navigation_model(input_tensor=None):
                       padding='same',
                       name='block4_conv3')(x)
     # segmentation module 0
-    mask_0 = layers.Conv2D(1, (3, 3),
+    mask_0 = layers.Conv2D(2, (3, 3),
                            activation='sigmoid',
                            padding='same',
                            name='mask_0')(x_block4)
@@ -99,7 +99,7 @@ def navigation_model(input_tensor=None):
                       padding='same',
                       name='block5_conv3')(x)
     # segmentation module 1
-    mask_1 = layers.Conv2D(1, (3, 3),
+    mask_1 = layers.Conv2D(2, (3, 3),
                            activation='sigmoid',
                            padding='same',
                            name='mask_1')(x_block5)
