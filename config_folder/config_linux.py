@@ -29,8 +29,8 @@ class ModelConfig(object):
 class TrainingConfig(object):
     # pretrained_weights_dir = os.path.join(prefix, 'weights/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5')
     pretrained_weights_dir = None
-    batch_size = 4
-    steps_per_epoch = 300
+    batch_size = 64
+    steps_per_epoch = 1000
     epochs = 30
 
 

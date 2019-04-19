@@ -23,7 +23,7 @@ def main():
     callbacks = create_callbacks(model_name)
     # data generator
     train_generator = generator.pretrain_generator('train', TrainingConfig.batch_size)
-    val_generator = generator.pretrain_generator(folder='val', batch_size=16)
+    # val_generator = generator.pretrain_generator(folder='val', batch_size=TrainingConfig.batch_size)
     # training
     print ('start training...')
     unit_model.fit_generator(generator=train_generator,
@@ -31,8 +31,8 @@ def main():
                          epochs=TrainingConfig.epochs,
                          verbose=1,
                         callbacks=callbacks,
-                        validation_data=val_generator,
-                        validation_steps=1,
+                        # validation_data=val_generator,
+                        # validation_steps=1,
                          )
     unit_model.save(model_name)
 

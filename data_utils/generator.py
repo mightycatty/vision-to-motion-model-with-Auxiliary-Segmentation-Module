@@ -89,8 +89,6 @@ def cityscape_seg_generator(data_folder, batch_size=16):
         """
         image_dir = image_dir.replace('\\', '/')
         sample_name = image_dir.split('/')[-1].split('_left')[0] + '_gtFine_labelIds.png'
-        import pdb
-        pdb.set_trace()
         sub_folder = sample_name.split('_')[0]
         prefix = os.path.join(image_dir.split('data')[0]+'data/gtFine_trainvaltest/gtFine/')
         folder = 'train' if '/train/' in image_dir else 'val'
@@ -221,7 +219,7 @@ def pretrain_generator(folder='train', batch_size=16):
     # 255 mean invalid labels
     assert folder in ['train', 'val'], 'folder must be train or val'
     cityscape_seg_folder = os.path.join(DataConfig.cityscape_folder, folder)
-    cityscape_seg_gen = cityscape_seg_generator(cityscape_seg_folder)
+    cityscape_seg_gen = cityscape_seg_generator(cityscape_seg_folder, batch_size)
     while True:
         seg_imgs, seg_labels = next(cityscape_seg_gen)
         cl_labels = 255*np.ones(shape=(batch_size, )).astype(np.int16).reshape((-1, ))
@@ -237,13 +235,15 @@ def pretrain_generator(folder='train', batch_size=16):
 if __name__ == '__main__':
     from data_utils.visualization import apply_mask
     import matplotlib.pyplot as plt
-    gen = pretrain_generator(batch_size=16)
+    gen = pretrain_generator('val', batch_size=16)
     while True:
         data, labels = next(gen)
         seg_labels = labels[-1]
         clf_labels = labels[0]
         for data_item, seg_item, clf_item in zip(data, seg_labels, clf_labels):
             color = [0, 75, 75]
+            seg_item = resize(seg_item)
+            seg_item = np.where(seg_item > 0.5, 1, 0)
             img = apply_mask(data_item, np.squeeze(seg_item), color)
             img = np.uint8(img)
             if clf_item < 255:
