@@ -91,6 +91,8 @@ def cityscape_seg_generator(data_folder, batch_size=16):
             sample_name = image_dir.split('\\')[-1].split('_left')[0] + '_gtFine_labelIds.png'
         else:
             sample_name = image_dir.split('/')[-1].split('_left')[0] + '_gtFine_labelIds.png'
+        import pdb
+        pdb.set_trace()
         sub_folder = sample_name.split('_')[0]
         prefix = os.path.join(image_dir.split('data')[0]+'data/gtFine_trainvaltest/gtFine/')
         folder = 'train' if 'train' in image_dir else 'val'
