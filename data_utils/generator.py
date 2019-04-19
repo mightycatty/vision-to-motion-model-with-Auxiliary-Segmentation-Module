@@ -99,6 +99,8 @@ def cityscape_seg_generator(data_folder, batch_size=16):
             return label_dir
         else:
             print('%s not found corresponding label')
+            print (label_dir)
+            exit(0)
             return None
     samples = dataset_util.get_file_list(data_folder)
     labels = [_get_label_for_cityscape(item) for item in samples]
@@ -229,7 +231,7 @@ def pretrain_generator(folder='train', batch_size=16):
         seg_labels_scale_0[seg_labels_scale_0 > 200] = 255
         seg_labels_scale_1 = batch_resize(seg_labels, (16, 16))
         seg_labels_scale_1[seg_labels_scale_1 > 200] = 255
-        yield data, [cl_labels, seg_labels_scale_0, seg_labels_scale_1]
+        yield seg_imgs, [cl_labels, seg_labels_scale_0, seg_labels_scale_1]
 
 
 if __name__ == '__main__':
