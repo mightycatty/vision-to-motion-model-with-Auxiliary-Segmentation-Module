@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6e5cc7f-ffed-4f86-a68a-5950f4dcb9b5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/config_folder/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_utils/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_utils/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_utils/generator.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,32 +13,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/data_utils/generator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="62" column="52" lean-forward="true" selection-start-line="62" selection-start-column="52" selection-end-line="62" selection-end-column="52" />
+            <state relative-caret-position="275">
+              <caret line="161" column="39" selection-start-line="161" selection-start-column="39" selection-end-line="161" selection-end-column="39" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
                 <element signature="e#249#292#0" />
+                <element signature="e#353#567#0" />
+                <element signature="e#604#904#0" />
+                <element signature="e#969#2387#0" />
+                <element signature="e#2451#4916#0" />
+                <element signature="e#6844#8383#0" />
               </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config_folder/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data_utils/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/__init__.py">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -102,8 +91,8 @@
         <option value="$PROJECT_DIR$/model.py" />
         <option value="$PROJECT_DIR$/train.py" />
         <option value="$PROJECT_DIR$/config_folder/config_agent.py" />
-        <option value="$PROJECT_DIR$/data_utils/generator.py" />
         <option value="$PROJECT_DIR$/config_folder/__init__.py" />
+        <option value="$PROJECT_DIR$/data_utils/generator.py" />
       </list>
     </option>
   </component>
@@ -139,11 +128,13 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\heshuai\lab\paper-for-sj\1\navigation" />
+      <recent name="F:\heshuai\lab\paper-for-sj\1\navigation\data_utils" />
+      <recent name="F:\heshuai\lab\paper-for-sj\1\code\navigation" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="F:\heshuai\lab\paper-for-sj\1\code\navigation\data_utils" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="F:\heshuai\lab\paper-for-sj\1\code\navigation" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -269,7 +260,21 @@
       <option name="project" value="LOCAL" />
       <updated>1555657874496</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add __init__.py">
+      <created>1555658137469</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1555658137469</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix bug">
+      <created>1555659031162</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1555659031162</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -298,7 +303,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="new model and fix generator bugs" />
     <MESSAGE value="sync" />
-    <option name="LAST_COMMIT_MESSAGE" value="sync" />
+    <MESSAGE value="add __init__.py" />
+    <MESSAGE value="fix bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bug" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/config_old.py" />
@@ -380,17 +387,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data_utils/generator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="62" column="52" lean-forward="true" selection-start-line="62" selection-start-column="52" selection-end-line="62" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <element signature="e#249#292#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config_folder/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -399,6 +395,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data_utils/generator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="161" column="39" selection-start-line="161" selection-start-column="39" selection-end-line="161" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#249#292#0" />
+            <element signature="e#353#567#0" />
+            <element signature="e#604#904#0" />
+            <element signature="e#969#2387#0" />
+            <element signature="e#2451#4916#0" />
+            <element signature="e#6844#8383#0" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
 </project>
