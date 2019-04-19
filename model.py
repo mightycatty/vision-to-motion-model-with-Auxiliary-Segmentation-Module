@@ -64,47 +64,47 @@ def navigation_model(input_tensor=None):
                       activation='relu',
                       padding='same',
                       name='block3_conv3')(x)
-    x_block3 = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
-    # segmentation module 0
-    mask_0 = layers.Conv2D(1, (3, 3),
-                           activation='sigmoid',
-                           padding='same',
-                           name='mask_0')(x_block3)
-    feature_fusion_0 = layers.Concatenate()([x_block3, mask_0])
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block3_pool')(x)
     # Block 4
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
-                      name='block4_conv1')(feature_fusion_0)
+                      name='block4_conv1')(x)
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block4_conv2')(x)
-    x = layers.Conv2D(512, (3, 3),
+    x_block4 = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block4_conv3')(x)
-    x_block4 = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(x)
-    # segmentation module 1
-    mask_1 = layers.Conv2D(1, (3, 3),
+    # segmentation module 0
+    mask_0 = layers.Conv2D(1, (3, 3),
                            activation='sigmoid',
                            padding='same',
-                           name='mask_1')(x_block4)
-    feature_fusion_1 = layers.Concatenate()([x_block4, mask_1])
+                           name='mask_0')(x_block4)
+    feature_fusion_0 = layers.Concatenate()([x_block4, mask_0])
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block4_pool')(feature_fusion_0)
     # Block 5
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
-                      name='block5_conv1')(feature_fusion_1)
+                      name='block5_conv1')(x)
     x = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block5_conv2')(x)
-    x = layers.Conv2D(512, (3, 3),
+    x_block5 = layers.Conv2D(512, (3, 3),
                       activation='relu',
                       padding='same',
                       name='block5_conv3')(x)
-    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(x)
+    # segmentation module 1
+    mask_1 = layers.Conv2D(1, (3, 3),
+                           activation='sigmoid',
+                           padding='same',
+                           name='mask_1')(x_block5)
+    feature_fusion_1 = layers.Concatenate()([x_block5, mask_1])
+    x = layers.MaxPooling2D((2, 2), strides=(2, 2), name='block5_pool')(feature_fusion_1)
     # Classification block
     classes = 6
     x = layers.Flatten(name='flatten')(x)

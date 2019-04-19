@@ -19,8 +19,6 @@ def batch_resize(img_batch, resize_shape=(256, 256)):
     for img_item in img_batch:
         img_list.append(resize(img_item, resize_shape))
     img_batch = np.stack(img_list, axis=0)
-    img_batch[img_batch > 0.5] = 1
-    img_batch[img_batch < 1] = 0
     img_batch = np.expand_dims(img_batch, axis=3)
     return img_batch
 
@@ -89,9 +87,12 @@ def cityscape_seg_generator(data_folder, batch_size=16):
         get corresponding label path given image
         :return:
         """
-        sample_name = image_dir.split('\\')[-1].split('_left')[0] + '_gtFine_labelIds.png'
+        if '\\' in image_dir:
+            sample_name = image_dir.split('\\')[-1].split('_left')[0] + '_gtFine_labelIds.png'
+        else:
+            sample_name = image_dir.split('/')[-1].split('_left')[0] + '_gtFine_labelIds.png'
         sub_folder = sample_name.split('_')[0]
-        prefix = os.path.join(image_dir.split('data')[0]+'data\\gtFine_trainvaltest\\gtFine\\')
+        prefix = os.path.join(image_dir.split('data')[0]+'data/gtFine_trainvaltest/gtFine/')
         folder = 'train' if 'train' in image_dir else 'val'
         label_dir = os.path.join(prefix, folder, sub_folder, sample_name)
         if os.path.exists(label_dir):
@@ -179,7 +180,13 @@ def indoor_seg_generator(data_folder, label_folder, batch_size=16):
         yield batch_data, batch_label
 
 
-def combine_generator(folder='train', batch_size=16):
+def finetune_generator(folder='train', batch_size=16):
+    """
+    finetune model with indoor data
+    :param folder:
+    :param batch_size:
+    :return:
+    """
     # 255 mean invalid labels
     assert folder in ['train', 'val'], 'folder must be train or val'
     batch_size = int(batch_size // 2)
@@ -187,7 +194,6 @@ def combine_generator(folder='train', batch_size=16):
     cityscape_seg_folder = os.path.join(DataConfig.cityscape_folder, folder)
     clf_gen = classification_generator(clf_folder, batch_size)
     indoor_seg_gen = indoor_seg_generator(DataConfig.seg_data_folder, DataConfig.seg_label_folder, batch_size)
-    cityscape_seg_gen = cityscape_seg_generator(cityscape_seg_folder)
     while True:
         cl_imgs, cl_labels = next(clf_gen)
         # seg_imgs, seg_labels = next(segmentation_generator(folder, batch_size))
@@ -199,14 +205,37 @@ def combine_generator(folder='train', batch_size=16):
         seg_labels_scale = np.concatenate([255*np.ones(shape=(batch_size, 256, 256)), seg_labels], axis=0).astype(np.int16)
         seg_labels_scale = np.expand_dims(seg_labels_scale, axis=3)
         seg_labels_scale_0 = batch_resize(seg_labels_scale, (32, 32))
+        seg_labels_scale_0[seg_labels_scale_0 > 200] = 255
         seg_labels_scale_1 = batch_resize(seg_labels_scale, (16, 16))
+        seg_labels_scale_1[seg_labels_scale_1 > 200] = 255
+        yield data, [cl_labels, seg_labels_scale_0, seg_labels_scale_1]
+
+
+def pretrain_generator(folder='train', batch_size=16):
+    """
+    pretrain model with cityscape segmentation data
+    :param folder:
+    :param batch_size:
+    :return:
+    """
+    # 255 mean invalid labels
+    assert folder in ['train', 'val'], 'folder must be train or val'
+    cityscape_seg_folder = os.path.join(DataConfig.cityscape_folder, folder)
+    cityscape_seg_gen = cityscape_seg_generator(cityscape_seg_folder)
+    while True:
+        seg_imgs, seg_labels = next(cityscape_seg_gen)
+        cl_labels = 255*np.ones(shape=(batch_size, )).astype(np.int16).reshape((-1, ))
+        seg_labels_scale_0 = batch_resize(seg_labels, (32, 32))
+        seg_labels_scale_0[seg_labels_scale_0 > 200] = 255
+        seg_labels_scale_1 = batch_resize(seg_labels, (16, 16))
+        seg_labels_scale_1[seg_labels_scale_1 > 200] = 255
         yield data, [cl_labels, seg_labels_scale_0, seg_labels_scale_1]
 
 
 if __name__ == '__main__':
     from data_utils.visualization import apply_mask
     import matplotlib.pyplot as plt
-    gen = combine_generator(batch_size=16)
+    gen = pretrain_generator(batch_size=16)
     while True:
         data, labels = next(gen)
         seg_labels = labels[-1]
