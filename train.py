@@ -5,13 +5,14 @@ from data_utils import generator
 from model import navigation_model, compile_model
 from train_utils import create_callbacks
 from config_folder.config import DataConfig, TrainingConfig
-import os
+from keras.utils import multi_gpu_model
 
 
 def main():
     # build and compile model
     unit_model = navigation_model()
     unit_model = compile_model(unit_model)
+    unit_model = multi_gpu_model(unit_model, gpus=4)
     # load weights
     # unit_model_dir = TrainingConfig.pretrained_weights_dir
     unit_model_dir = None
@@ -34,7 +35,7 @@ def main():
                         validation_data=val_generator,
                         validation_steps=1,
                          )
-    unit_model.save(model_name)
+    unit_model.save_weights(model_name)
 
 
 if __name__ == '__main__':

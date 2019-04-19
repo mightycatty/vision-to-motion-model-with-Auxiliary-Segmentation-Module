@@ -129,7 +129,7 @@ def compile_model(base_model):
     tf.summary.image('mask_1', tf.concat([255 * tf.cast(mask_1, tf.float32)] * 3, axis=3),
                      max_outputs=6)  # Concatenate row-wise.
     base_model.compile(
-        loss=[keras.losses.sparse_categorical_crossentropy, defined_loss, defined_loss],
+        loss=[defined_loss, defined_loss, defined_loss],
         optimizer='adam', #keras.optimizers.SGD(lr=3e-5, momentum=0.9),
         metrics=['acc']
     )
