@@ -1,6 +1,6 @@
 # End-to-End Vision-to-Motion Model with Auxiliary Segmentation Module for Indoor Navigation
 
-This repository contains the source code for the paper [End-to-End Vision-to-Motion Model with Auxiliary Segmentation Module for Indoor Navigation](https://dl.acm.org/doi/abs/10.1145/3342999.3343007).
+Source code for the paper [End-to-End Vision-to-Motion Model with Auxiliary Segmentation Module for Indoor Navigation](https://dl.acm.org/doi/abs/10.1145/3342999.3343007).
 
 ## File Structure
 
